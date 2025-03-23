@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35913.81 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REPONetworkTweaks", "REPONetworkTweaks.csproj", "{FA4892F0-9D25-372C-D4FB-F781F905E375}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA4892F0-9D25-372C-D4FB-F781F905E375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA4892F0-9D25-372C-D4FB-F781F905E375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA4892F0-9D25-372C-D4FB-F781F905E375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA4892F0-9D25-372C-D4FB-F781F905E375}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FB4FC154-70E2-4BC9-863E-8833363BFF34}
+	EndGlobalSection
+EndGlobal

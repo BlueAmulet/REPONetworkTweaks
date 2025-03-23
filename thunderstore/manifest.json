@@ -1,0 +1,9 @@
+{
+    "name": "REPONetworkTweaks",
+    "version_number": "1.0.0",
+    "website_url": "https://github.com/BlueAmulet/REPONetworkTweaks",
+    "description": "Smoother, more accurate, and more reliable networking",
+    "dependencies": [
+        "BepInEx-BepInExPack-5.4.2100"
+    ]
+}
