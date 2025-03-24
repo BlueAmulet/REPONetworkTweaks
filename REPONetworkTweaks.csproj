@@ -20,6 +20,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>lib\Assembly-CSharp-publicized.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="Photon3Unity3D">
       <HintPath>lib\Photon3Unity3D-publicized.dll</HintPath>
       <Private>False</Private>

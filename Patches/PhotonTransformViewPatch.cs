@@ -12,30 +12,47 @@ namespace REPONetworkTweaks.Patches
 		[HarmonyPatch(nameof(PhotonTransformView.Awake))]
 		public static void PostfixAwake(ref PhotonTransformView __instance)
 		{
-			__instance.gameObject.AddComponent<PhotonTransformViewTweak>();
+			if (SemiFunc.IsMultiplayer())
+			{
+				__instance.gameObject.AddComponent<PhotonTransformViewTweak>();
+			}
 		}
 
 		[HarmonyPrefix]
 		[HarmonyPatch(nameof(PhotonTransformView.OnPhotonSerializeView))]
 		public static bool PrefixOnPhotonSerializeView(ref PhotonTransformView __instance, PhotonStream stream, PhotonMessageInfo info)
 		{
-			__instance.GetComponent<PhotonTransformViewTweak>().OnPhotonSerializeView(stream, info);
-			return false;
+			if (SemiFunc.IsMultiplayer())
+			{
+				__instance.GetComponent<PhotonTransformViewTweak>().OnPhotonSerializeView(stream, info);
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 
 		[HarmonyPrefix]
 		[HarmonyPatch(nameof(PhotonTransformView.Teleport))]
 		public static bool PrefixTeleport(ref PhotonTransformView __instance, Vector3 _position, Quaternion _rotation)
 		{
-			__instance.GetComponent<PhotonTransformViewTweak>().Teleport(_position, _rotation);
-			return false;
+			if (SemiFunc.IsMultiplayer())
+			{
+				__instance.GetComponent<PhotonTransformViewTweak>().Teleport(_position, _rotation);
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 
 		[HarmonyPrefix]
 		[HarmonyPatch(nameof(PhotonTransformView.Update))]
 		public static bool PrefixUpdate()
 		{
-			return false;
+			return !SemiFunc.IsMultiplayer();
 		}
 	}
 }

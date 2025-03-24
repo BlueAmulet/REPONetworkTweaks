@@ -2,6 +2,8 @@
 Replaces Photon's position syncing with a better version.  
 Also prevents client sided TimeoutDisconnect.  
 
+This mod is intended for use in multiplayer, and does nothing in singleplayer.  
+
 ## Features
 Compatible with vanilla clients/hosts  
 Hermite interpolation rather than Lerp smoothing.  
