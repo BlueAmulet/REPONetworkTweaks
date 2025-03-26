@@ -28,6 +28,10 @@
       <HintPath>lib\Photon3Unity3D-publicized.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="PhotonRealtime">
+      <HintPath>lib\PhotonRealtime-publicized.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="PhotonUnityNetworking">
       <HintPath>lib\PhotonUnityNetworking-publicized.dll</HintPath>
       <Private>False</Private>

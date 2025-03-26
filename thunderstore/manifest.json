@@ -1,6 +1,6 @@
 {
     "name": "REPONetworkTweaks",
-    "version_number": "1.0.1",
+    "version_number": "1.0.2",
     "website_url": "https://github.com/BlueAmulet/REPONetworkTweaks",
     "description": "Smoother, more accurate, and more reliable networking",
     "dependencies": [
