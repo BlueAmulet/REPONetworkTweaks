@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 #pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable RCS1146 // Use conditional access
 
 namespace REPONetworkTweaks
 {
@@ -11,6 +12,7 @@ namespace REPONetworkTweaks
 	{
 		private Rigidbody rigidBody;
 		private PhotonTransformView photonTransformView;
+		private PhysGrabHinge hinge;
 
 		// Owner variables
 		private Vector3 m_StoredPosition;
@@ -38,6 +40,7 @@ namespace REPONetworkTweaks
 		{
 			rigidBody = GetComponent<Rigidbody>();
 			photonTransformView = GetComponent<PhotonTransformView>();
+			hinge = GetComponent<PhysGrabHinge>();
 			m_StoredPosition = transform.position; // Changed from localPosition
 		}
 
@@ -169,13 +172,45 @@ namespace REPONetworkTweaks
 				Vector3 m_Direction = (Vector3)stream.ReceiveNext();
 				Quaternion receivedRotation = (Quaternion)stream.ReceiveNext();
 
+				// Velocity data on rigidbodies with hinges is just incorrect
+				if (hinge != null && !hinge.broken)
+				{
+					if (haveFirstSend)
+					{
+						receivedVelocity = m_Direction / (info.SentServerTimestamp - lastSendTimestamp) * 1000f;
+					}
+					else
+					{
+						receivedVelocity = m_Direction / smoothUpdateFrequency;
+					}
+				}
+
 				if (teleport)
 				{
 					snapshots.Clear();
 					prevSnapshot = null;
 				}
-				receivedPosition += receivedVelocity * Settings.Future.Value * smoothUpdateFrequency;
-				snapshots.AddLast(new TransformSnapshot(receivedPosition, receivedRotation, receivedVelocity, receivedAngularVelocity));
+				float future = Mathf.Max(Settings.Future.Value * smoothUpdateFrequency, 0f);
+				TransformSnapshot currentState = new TransformSnapshot(receivedPosition, receivedRotation, receivedVelocity, receivedAngularVelocity);
+				if (snapshots.Count > 0 && (info.SentServerTimestamp - lastSendTimestamp) / 1000f < Settings.TimingThreshold.Value)
+				{
+					TransformSnapshot previousState = snapshots.Last.Value;
+					// Advance position forward in time
+					Vector3 acceleration = (currentState.velocity - previousState.velocity) / smoothUpdateFrequency;
+					currentState.position += (currentState.velocity * future) + (0.5f * acceleration * future * future);
+					// Advance rotation forward in time
+					Vector3 angularAcceleration = (currentState.angularVelocity - previousState.angularVelocity) / smoothUpdateFrequency;
+					Vector3 futureAngularVelocity = currentState.angularVelocity + (angularAcceleration * future);
+					Quaternion deltaRotation = Quaternion.Euler(futureAngularVelocity * future);
+					currentState.rotation *= deltaRotation;
+				}
+				else
+				{
+					// No previous data or previous data is too old
+					currentState.position += currentState.velocity * future;
+					currentState.rotation *= Quaternion.Euler(currentState.angularVelocity * future);
+				}
+				snapshots.AddLast(currentState);
 				if (snapshots.Count == 2)
 				{
 					// Have enough to start interpolating now
@@ -200,7 +235,7 @@ namespace REPONetworkTweaks
 				{
 					// Send timestamps are more reliable than Recv
 					lastSerializationFrequency = (info.SentServerTimestamp - lastSendTimestamp) / 1000f;
-					if (lastSerializationFrequency >= 1)
+					if (lastSerializationFrequency >= Settings.TimingThreshold.Value)
 					{
 						// Assuming the body stopped moving, reset frequencies
 						lastSerializationFrequency = PhotonNetwork.serializationFrequency / 1000f;

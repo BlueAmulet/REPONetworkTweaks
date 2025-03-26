@@ -20,6 +20,8 @@ If you are installing this manually, do the following
 
 ## Configuration
 **DisableTimeout:** Disables Photon's client sided network timeout from randomly booting you out of the game.  
+**PhotonLateUpdate:** Run Photon in LateUpdate instead of FixedUpdate. Processes packets faster.  
 **Extrapolate:** Extrapolate data for a little bit when missing information.  
 **RateSmoothing:** Photon will skip minor updates, this controls how quick the calculated update rate changes.  
 **Future:** How much to project data into the future, too little feels laggy but too much will cause rubberbanding.  
+**TimingThreshold:** Time between updates to be considered discontinuous.  
