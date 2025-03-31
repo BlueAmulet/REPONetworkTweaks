@@ -1,3 +1,6 @@
+# 1.0.3
+- Add safeguards around missing Rigidbody
+
 # 1.0.2
 - Fix doors disconnecting from their hinge on movement
 - Better future predictions

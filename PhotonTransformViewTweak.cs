@@ -55,11 +55,14 @@ namespace REPONetworkTweaks
 			teleport = true;
 			transform.position = _position;
 			transform.rotation = _rotation;
-			rigidBody.position = _position;
-			rigidBody.rotation = _rotation;
 			m_StoredPosition = _position; // Added due to m_Direction
 			isSleeping = false;
-			rigidBody.WakeUp();
+			if (rigidBody)
+			{
+				rigidBody.position = _position;
+				rigidBody.rotation = _rotation;
+				rigidBody.WakeUp();
+			}
 		}
 
 		private Vector3 HermiteInterpolatePosition(Vector3 startPos, Vector3 startVel, Vector3 endPos, Vector3 endVel, float interpolation)
@@ -78,13 +81,20 @@ namespace REPONetworkTweaks
 
 		public void Update()
 		{
+			if (!rigidBody)
+			{
+				rigidBody = GetComponent<Rigidbody>();
+			}
 			Transform transform = base.transform;
 			if (!PhotonNetwork.IsMasterClient)
 			{
 				// Unity's NetworkRigidbody forces kinematic and no interpolation on non owner
 				// This makes the movement smooth
-				rigidBody.isKinematic = true;
-				rigidBody.interpolation = RigidbodyInterpolation.None;
+				if (rigidBody)
+				{
+					rigidBody.isKinematic = true;
+					rigidBody.interpolation = RigidbodyInterpolation.None;
+				}
 
 				if (snapshots.Count >= 1)
 				{

@@ -11,7 +11,7 @@ namespace REPONetworkTweaks
 		internal const string Name = "REPONetworkTweaks";
 		internal const string Author = "BlueAmulet";
 		internal const string ID = Author + "." + Name;
-		internal const string Version = "1.0.2";
+		internal const string Version = "1.0.3";
 
 		internal static ManualLogSource Log;
 
